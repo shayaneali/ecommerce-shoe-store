@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Products — OLLA Shoes</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0d6efd;
+      --primary-dark: #0a58ca;
+      --accent: #ff6b35;
+      --dark: #111827;
+      --light-bg: #f8f9fa;
+      --card-bg: #ffffff;
+      --text-muted: #6b7280;
+    }
+
+    body { background-color: var(--light-bg); font-family: 'DM Sans', sans-serif; color: var(--dark); margin: 0; }
+
+    .navbar { background: var(--primary) !important; padding: 0.75rem 0; }
+    .navbar-brand img { height: 40px; border-radius: 50%; border: 2px solid white; margin-right: 10px; }
+    .navbar-brand strong { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 2px; color: white; }
+    .nav-link { color: rgba(255,255,255,0.85) !important; font-weight: 500; font-size: 0.95rem; transition: color 0.2s; padding: 0.4rem 0.9rem !important; border-radius: 20px; }
+    .nav-link:hover, .nav-link.active { color: white !important; background: rgba(255,255,255,0.15); }
+    .btn-nav-profile { border: 2px solid rgba(255,255,255,0.7); color: white; border-radius: 50px; font-size: 0.9rem; font-weight: 500; padding: 6px 20px; text-decoration: none; transition: 0.2s; }
+    .btn-nav-profile:hover { background: white; color: var(--primary); }
+
+    .page-header {
+      background: linear-gradient(135deg, rgba(13,110,253,0.85) 0%, rgba(0,0,0,0.6) 100%),
+        url("https://www.champion.com/cdn/shop/collections/Shoes.png?v=1740433870&width=1400") center/cover no-repeat;
+      min-height: 40vh;
+      display: flex; align-items: center; justify-content: center;
+      color: white; border-bottom: 5px solid var(--primary);
+      text-align: center;
+    }
+    .page-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 6vw, 4.5rem); letter-spacing: 4px; }
+    .page-header p { opacity: 0.85; font-size: 1.1rem; margin: 0; }
+
+    .section-tag { font-size: 0.8rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+    .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem; letter-spacing: 2px; margin: 0; }
+
+    .product-card { border: none; border-radius: 16px; overflow: hidden; background: var(--card-bg); transition: transform 0.35s ease, box-shadow 0.35s ease; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+    .product-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.15); z-index: 5; }
+    .product-img { height: 220px; width: 100%; object-fit: cover; display: block; }
+    .card-body { padding: 1.2rem 1.2rem 1.4rem; display: flex; flex-direction: column; }
+    .card-body h5 { font-weight: 700; font-size: 1.05rem; margin-bottom: 0.25rem; }
+    .card-body .desc { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.6rem; flex-grow: 1; }
+    .card-body .price { color: var(--accent); font-weight: 700; font-size: 1rem; margin-bottom: 0.8rem; }
+    .btn-buy { border-radius: 50px; font-weight: 600; background: var(--primary); color: white; border: none; padding: 9px 0; width: 100%; transition: 0.2s; cursor: pointer; }
+    .btn-buy:hover { background: var(--primary-dark); }
+
+    footer { background: var(--primary); color: white; padding: 2.5rem 0 1.5rem; margin-top: 5rem; }
+    .footer-brand { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 3px; }
+    .footer-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.9rem; display: block; margin-bottom: 0.4rem; transition: color 0.2s; }
+    .footer-links a:hover { color: white; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.2); margin-top: 1.5rem; padding-top: 1rem; text-align: center; font-size: 0.85rem; opacity: 0.75; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top shadow">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" href="index.html">
+      <img loading="lazy" src="assets/hero-image.jpg" alt="OLLA Logo">
+      <strong>OLLA Shoes</strong>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMain">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link active" href="prod.html">Products</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="cont.html">Contact</a></li>
+      </ul>
+      <div class="ms-3"><a href="prof.html" class="btn-nav-profile">Profile</a></div>
+    </div>
+  </div>
+</nav>
+
+<section class="page-header">
+  <div>
+    <h1>Our Best Collection</h1>
+    <p>High-quality footwear for every occasion.</p>
+  </div>
+</section>
+
+<div class="container py-5">
+  <div class="text-center mb-5">
+    <p class="section-tag">Curated For You</p>
+    <h2 class="section-title">Choose Your Style</h2>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-md-3 col-sm-6">
+      <div class="card product-card h-100">
+        <img loading="lazy" src="https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=800" class="product-img" alt="Urban Sneakers">
+        <div class="card-body">
+          <h5>Urban Sneakers</h5>
+          <p class="desc">Perfect for daily streetwear.</p>
+          <p class="price">Rs. 4,800</p>
+          <button class="btn-buy">Buy Now</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="card product-card h-100">
+        <img loading="lazy" src="https://kxadmin.metroshoes.com/product/25-11011330/550/25-11011330LA14.jpg" class="product-img" alt="Sport Runner">
+        <div class="card-body">
+          <h5>Sport Runner</h5>
+          <p class="desc">Ultra-light for fast movement.</p>
+          <p class="price">Rs. 5,500</p>
+          <button class="btn-buy">Buy Now</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="card product-card h-100">
+        <img loading="lazy" src="https://xcdn.next.co.uk/Common/Items/Default/Default/ItemImages/3_4Ratio/SearchINT/Lge/AA9025.jpg?im=Resize,width=450" class="product-img" alt="Leather Premium">
+        <div class="card-body">
+          <h5>Leather Premium</h5>
+          <p class="desc">Timeless design, top-notch material.</p>
+          <p class="price">Rs. 7,999</p>
+          <button class="btn-buy">Buy Now</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="card product-card h-100">
+        <img loading="lazy" src="https://en-kw.sssports.com/dw/image/v2/BDVB_PRD/on/demandware.static/-/Sites-akeneo-master-catalog/default/dw2255429f/sss/SSS2/N/B/W/1/0/SSS2_NBW1080K14_B_197966138899_2.jpg?sw=400&sh=400&sm=fit" class="product-img" alt="Comfort Foam">
+        <div class="card-body">
+          <h5>Comfort Foam</h5>
+          <p class="desc">100% comfort with memory soles.</p>
+          <p class="price">Rs. 4,200</p>
+          <button class="btn-buy">Buy Now</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="card product-card h-100">
+        <img loading="lazy" src="https://www.calvinklein.com.hk/dw/image/v2/BGLQ_PRD/on/demandware.static/-/Sites-ck-master-catalog/default/dw90422dff/YM01344/YM01344_01W_main_2325x3100_Hi_Res_JPEG.jpg?sw=548&sh=721&q=90" class="product-img" alt="Classic White">
+        <div class="card-body">
+          <h5>Classic White</h5>
+          <p class="desc">Minimalist, clean, always in trend.</p>
+          <p class="price">Rs. 6,500</p>
+          <button class="btn-buy">Buy Now</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="card product-card h-100">
+        <img loading="lazy" src="https://cdn.media.amplience.net/i/clarks/MDPT_AW25_Festive_Dress_1?fmt=auto&w=650" class="product-img" alt="Black Edition">
+        <div class="card-body">
+          <h5>Black Edition</h5>
+          <p class="desc">Bold design for bold people.</p>
+          <p class="price">Rs. 8,200</p>
+          <button class="btn-buy">Buy Now</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="card product-card h-100">
+        <img loading="lazy" src="https://media.hypedc.com/cdn-cgi/image/fit=scale-down,f=auto,w=2400/products/184da268-116c-457d-96c3-e76d642e5f43/ec122f34/l47450600_blk_01.jpg" class="product-img" alt="Road Runner">
+        <div class="card-body">
+          <h5>Road Runner</h5>
+          <p class="desc">Speed engineering with grip.</p>
+          <p class="price">Rs. 5,800</p>
+          <button class="btn-buy">Buy Now</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="card product-card h-100">
+        <img loading="lazy" src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=800" class="product-img" alt="Flexi Walkers">
+        <div class="card-body">
+          <h5>Flexi Walkers</h5>
+          <p class="desc">Made for all-day walking & comfort.</p>
+          <p class="price">Rs. 3,900</p>
+          <button class="btn-buy">Buy Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="footer-brand">OLLA Shoes</div>
+        <p style="opacity:0.75; font-size:0.9rem; margin-top:0.75rem;">Premium footwear for every occasion. Comfort meets style — every single step.</p>
+      </div>
+      <div class="col-md-2 footer-links">
+        <strong style="font-size:0.85rem; letter-spacing:1px; text-transform:uppercase; opacity:0.6;">Pages</strong>
+        <div style="margin-top:0.75rem;">
+          <a href="index.html">Home</a>
+          <a href="prod.html">Products</a>
+          <a href="about.html">About</a>
+          <a href="cont.html">Contact</a>
+        </div>
+      </div>
+      <div class="col-md-3 footer-links">
+        <strong style="font-size:0.85rem; letter-spacing:1px; text-transform:uppercase; opacity:0.6;">Follow Us</strong>
+        <div style="margin-top:0.75rem;">
+          <a href="#">Instagram</a>
+          <a href="#">Facebook</a>
+          <a href="#">Twitter / X</a>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <strong style="font-size:0.85rem; letter-spacing:1px; text-transform:uppercase; opacity:0.6;">Contact</strong>
+        <p style="opacity:0.75; font-size:0.9rem; margin-top:0.75rem; margin-bottom:0.3rem;">📍 Lahore, Punjab, Pakistan</p>
+        <p style="opacity:0.75; font-size:0.9rem; margin-bottom:0.3rem;">📞 +92 300 *******</p>
+        <p style="opacity:0.75; font-size:0.9rem;">📧 support@ollashoes.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2025 OLLA Shoes — All Rights Reserved</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

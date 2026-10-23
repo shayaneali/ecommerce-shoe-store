@@ -1,0 +1,196 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Signup</title>
+
+
+    <style>
+    body{
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: #f1f1f1;
+    }
+
+    .container{
+        width: 90%;          
+        max-width: 400px;    
+        margin: 80px auto;
+        background: #fff;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        transition: .3s;
+    }
+
+    h2{
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    input{
+        width: 100%;
+        margin: 10px 0;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        outline: none;
+    }
+
+    button{
+        width: 100%;
+        padding: 12px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 8px;
+        background: #333;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: .2s;
+    }
+
+    button:hover{
+        background: black;
+    }
+
+    .toggle{
+        text-align: center;
+        margin-top: 15px;
+        cursor: pointer;
+        color: #333;
+        font-weight: bold;
+    }
+
+    .toggle:hover{
+        text-decoration: underline;
+    }
+
+    .fade{
+        animation: fade .5s;
+    }
+
+    @keyframes fade {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    }
+
+    /* Media Query for smaller screens */
+    @media (max-width: 576px){
+        .container{
+            margin: 40px auto;
+            padding: 20px;
+        }
+        h2{
+            font-size: 1.5rem;
+        }
+        input, button{
+            padding: 10px;
+            font-size: 14px;
+        }
+    }
+</style>
+
+
+</head>
+<body>
+
+<!-- BACK BUTTON -->
+<button onclick="history.back()" style="
+    padding:8px 14px;
+    border:none;
+    background:#333;
+    color:#fff;
+    border-radius:6px;
+    cursor:pointer;
+    margin:10px;">
+  ⬅ Back
+</button>
+
+
+<div class="container" id="formBox">
+
+    <!-- LOGIN FORM -->
+    <div id="loginForm" class="fade">
+        <h2>Login</h2>
+        <input type="email" placeholder="Email" id="loginEmail">
+        <input type="password" placeholder="Password" id="loginPass">
+        <button id="loginBtn">Login</button>
+        <p class="toggle" onclick="showSignup()">Create an account?</p>
+    </div>
+
+    <!-- SIGNUP FORM -->
+    <div id="signupForm" class="fade" style="display:none;">
+        <h2>Signup</h2>
+        <input type="text" placeholder="Full Name" id="signupName">
+        <input type="email" placeholder="Email" id="signupEmail">
+        <input type="password" placeholder="Password" id="signupPass">
+        <button id="signupBtn">Signup</button>
+        <p class="toggle" onclick="showLogin()">Already have an account?</p>
+    </div>
+
+</div>
+
+<script>
+    // Switch Forms
+    function showSignup(){
+        document.getElementById("loginForm").style.display = "none";
+        document.getElementById("signupForm").style.display = "block";
+    }
+
+    function showLogin(){
+        document.getElementById("signupForm").style.display = "none";
+        document.getElementById("loginForm").style.display = "block";
+    }
+
+    // SIGNUP LOGIC
+    document.getElementById("signupBtn").onclick = function () {
+        let name = document.getElementById("signupName").value;
+        let email = document.getElementById("signupEmail").value;
+        let pass = document.getElementById("signupPass").value;
+
+        if (name === "" || email === "" || pass === "") {
+            alert("Please fill all fields.");
+            return;
+        }
+
+        localStorage.setItem("userName", name);
+        localStorage.setItem("userEmail", email);
+        localStorage.setItem("userPass", pass);
+
+        alert("Signup successful!");
+        showLogin();
+    };
+
+    // LOGIN LOGIC
+    document.getElementById("loginBtn").onclick = function () {
+        let email = document.getElementById("loginEmail").value;
+        let pass = document.getElementById("loginPass").value;
+
+        let savedEmail = localStorage.getItem("userEmail");
+        let savedPass = localStorage.getItem("userPass");
+
+        if (!savedEmail || !savedPass) {
+            alert("No account found. Please signup first.");
+            showSignup();
+            return;
+        }
+
+        if (email === savedEmail && pass === savedPass) {
+            alert("Login successful!");
+            // Redirect if needed:
+            // window.location.href = "profile.html";
+        } else {
+            alert("Incorrect email or password.");
+        }
+    };
+</script>
+
+</body>
+</html>
+

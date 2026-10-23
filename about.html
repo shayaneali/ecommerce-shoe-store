@@ -1,0 +1,420 @@
+<!-- 
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - OLLA Shoes</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="assets/hero-image.jpg" style="border-radius: 50%;">
+
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .header-banner {
+            background: url("https://hips.hearstapps.com/hmg-prod/images/running-shoes-005-68419d3f4376f.jpg?crop=0.8888888888888888xw:1xh;center,top&resize=1200:*") center/cover no-repeat;
+            min-height: 50vh; /* use min-height instead of fixed height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-shadow: 0 0 15px black;
+            padding: 2rem; /* responsive padding */
+            /* Added solid border to match other pages */
+            border-bottom: 5px solid #0d6efd; 
+        }
+
+        .header-banner h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+        }
+
+        .about-img {
+            width: 100%;
+            border-radius: 12px;
+            object-fit: cover;
+            height: auto; /* responsive height */
+        }
+
+        .value-icon {
+            font-size: 2.5rem;
+            color: #0d6efd;
+        }
+
+        .value-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            transition: .3s;
+            border: none;
+        }
+
+        .value-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        footer {
+            background: #0d6efd;
+            color: white;
+        }
+
+        /* RESPONSIVE TEXT */
+        @media (max-width: 768px) {
+            .header-banner h1 {
+                font-size: 2rem;
+                text-align: center;
+            }
+            .value-card {
+                padding: 15px;
+            }
+            .about-img {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-primary navbar-expand-lg sticky-top shadow">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="web.html">
+            <img loading="lazy" src="assets/hero-image.jpg" 
+                 style="height:40px; margin-right:10px; border-radius: 50%; border: 2px solid white;">
+            <strong>OLLA Shoes</strong>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="web.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="prod.html">Products</a></li>
+                <li class="nav-item"><a class="nav-link active" href="about.html">About</a></li> <li class="nav-item"><a class="nav-link" href="cont.html">Contact</a></li>
+            </ul>
+
+            <div class="ms-3">
+                <button type="button" class="btn btn-outline-light rounded-pill position-relative" id="profileBtn">
+                    <a href="prof.html" class="text-decoration-none text-reset">Profile</a>
+                    <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                        <span class="visually-hidden">New alerts</span>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+<section class="header-banner">
+    <h1>About OLLA Shoes</h1>
+</section>
+
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <img loading="lazy" class="about-img shadow-lg"
+                 src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=1000"
+                 alt="About OLLA Shoes">
+        </div>
+
+        <div class="col-md-6">
+            <h2 class="fw-bold">Who We Are</h2>
+            <p class="mt-3">
+                OLLA Shoes started with one simple goal — to make footwear that blends **comfort, durability, and modern style**. Every pair is crafted with premium materials,
+                high-quality stitching, and a design philosophy centered on confidence and daily hustle.
+            </p>
+            <p>
+                We believe good shoes can change your whole day. That’s why our team focuses on
+                **innovation, comfort engineering**, and designs that never go out of trend.
+            </p>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<div class="container py-5">
+    <h2 class="text-center fw-bold mb-4">Our Core Values</h2>
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="value-card shadow-sm text-center">
+                <div class="value-icon">👟</div>
+                <h4 class="fw-bold mt-3">Premium Quality</h4>
+                <p>We use high-grade materials to ensure long-lasting comfort and durability.</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="value-card shadow-sm text-center">
+                <div class="value-icon">🎨</div>
+                <h4 class="fw-bold mt-3">Modern Design</h4>
+                <p>Stylish trends blended with classic elements to fit every personality.</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="value-card shadow-sm text-center">
+                <div class="value-icon">⚡</div>
+                <h4 class="fw-bold mt-3">Comfort Engineering</h4>
+                <p>Each shoe is designed to support long walks, workouts, and daily life.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<hr>
+
+<div class="container py-5">
+    <div class="text-center">
+        <h2 class="fw-bold">Our Story</h2>
+        <p class="mt-3 mx-auto" style="max-width: 750px;">
+            OLLA Shoes started as a small workshop and grew into a trusted brand loved by thousands.
+            From streetwear sneakers to athletic performance shoes, our purpose remains the same:
+            create footwear that helps you **move confidently — every single day**.
+        </p>
+    </div>
+</div>
+
+<footer class="text-center p-3 mt-4">
+    <div class="container">
+       <p class="mb-0 fw-bold">© 2025 OLLA Shoes — All Rights Reserved</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About Us — OLLA Shoes</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0d6efd;
+      --primary-dark: #0a58ca;
+      --accent: #ff6b35;
+      --dark: #111827;
+      --light-bg: #f8f9fa;
+      --card-bg: #ffffff;
+      --text-muted: #6b7280;
+    }
+
+    body { background-color: var(--light-bg); font-family: 'DM Sans', sans-serif; color: var(--dark); margin: 0; }
+
+    .navbar { background: var(--primary) !important; padding: 0.75rem 0; }
+    .navbar-brand img { height: 40px; border-radius: 50%; border: 2px solid white; margin-right: 10px; }
+    .navbar-brand strong { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 2px; color: white; }
+    .nav-link { color: rgba(255,255,255,0.85) !important; font-weight: 500; font-size: 0.95rem; transition: color 0.2s; padding: 0.4rem 0.9rem !important; border-radius: 20px; }
+    .nav-link:hover, .nav-link.active { color: white !important; background: rgba(255,255,255,0.15); }
+    .btn-nav-profile { border: 2px solid rgba(255,255,255,0.7); color: white; border-radius: 50px; font-size: 0.9rem; font-weight: 500; padding: 6px 20px; text-decoration: none; transition: 0.2s; }
+    .btn-nav-profile:hover { background: white; color: var(--primary); }
+
+    .page-header {
+      background: linear-gradient(135deg, rgba(13,110,253,0.8) 0%, rgba(0,0,0,0.55) 100%),
+        url("https://hips.hearstapps.com/hmg-prod/images/running-shoes-005-68419d3f4376f.jpg?crop=0.8888888888888888xw:1xh;center,top&resize=1200:*") center/cover no-repeat;
+      min-height: 45vh;
+      display: flex; align-items: center; justify-content: center;
+      color: white; border-bottom: 5px solid var(--primary); text-align: center;
+    }
+    .page-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 6vw, 4.5rem); letter-spacing: 4px; }
+    .page-header p { opacity: 0.85; font-size: 1.1rem; margin: 0; }
+
+    .section-tag { font-size: 0.8rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+    .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem; letter-spacing: 2px; margin: 0; }
+
+    .about-img { width: 100%; border-radius: 16px; object-fit: cover; box-shadow: 0 10px 30px rgba(0,0,0,0.12); }
+
+    .value-card { background: white; border-radius: 16px; padding: 2rem 1.5rem; text-align: center; border: none; box-shadow: 0 2px 12px rgba(0,0,0,0.07); transition: 0.3s; }
+    .value-card:hover { transform: translateY(-8px); box-shadow: 0 16px 32px rgba(0,0,0,0.13); }
+    .value-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+    .value-card h4 { font-weight: 700; margin-bottom: 0.5rem; }
+    .value-card p { color: var(--text-muted); font-size: 0.9rem; margin: 0; }
+
+    .stat-box { background: var(--primary); color: white; border-radius: 16px; padding: 2rem 1rem; text-align: center; }
+    .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; letter-spacing: 2px; line-height: 1; }
+    .stat-label { font-size: 0.85rem; opacity: 0.8; margin-top: 0.25rem; }
+
+    footer { background: var(--primary); color: white; padding: 2.5rem 0 1.5rem; margin-top: 5rem; }
+    .footer-brand { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 3px; }
+    .footer-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.9rem; display: block; margin-bottom: 0.4rem; transition: color 0.2s; }
+    .footer-links a:hover { color: white; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.2); margin-top: 1.5rem; padding-top: 1rem; text-align: center; font-size: 0.85rem; opacity: 0.75; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top shadow">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" href="index.html">
+      <img loading="lazy" src="assets/hero-image.jpg" alt="OLLA Logo">
+      <strong>OLLA Shoes</strong>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMain">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="prod.html">Products</a></li>
+        <li class="nav-item"><a class="nav-link active" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="cont.html">Contact</a></li>
+      </ul>
+      <div class="ms-3"><a href="prof.html" class="btn-nav-profile">Profile</a></div>
+    </div>
+  </div>
+</nav>
+
+<section class="page-header">
+  <div>
+    <h1>About OLLA Shoes</h1>
+    <p>Our story, values, and passion for footwear.</p>
+  </div>
+</section>
+
+<!-- WHO WE ARE -->
+<div class="container py-5">
+  <div class="row align-items-center g-5">
+    <div class="col-md-6">
+      <img loading="lazy" class="about-img" src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=1000" alt="About OLLA Shoes">
+    </div>
+    <div class="col-md-6">
+      <p class="section-tag">Our Identity</p>
+      <h2 class="section-title" style="font-size:2.4rem;">Who We Are</h2>
+      <p class="mt-3" style="font-size:1.05rem; line-height:1.8;">
+        OLLA Shoes started with one simple goal — to make footwear that blends <strong>comfort, durability, and modern style</strong>. Every pair is crafted with premium materials, high-quality stitching, and a design philosophy centered on confidence and daily hustle.
+      </p>
+      <p style="font-size:1.05rem; line-height:1.8; color: var(--text-muted);">
+        We believe good shoes can change your whole day. That's why our team focuses on <strong>innovation, comfort engineering</strong>, and designs that never go out of trend.
+      </p>
+      <a href="prod.html" class="btn btn-primary rounded-pill px-4 py-2 mt-2">Explore Collection →</a>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<!-- <div class="container pb-5">
+  <div class="row g-3">
+    <div class="col-6 col-md-3"><div class="stat-box"><div class="stat-num">5K+</div><div class="stat-label">Happy Customers</div></div></div>
+    <div class="col-6 col-md-3"><div class="stat-box"><div class="stat-num">50+</div><div class="stat-label">Shoe Styles</div></div></div>
+    <div class="col-6 col-md-3"><div class="stat-box"><div class="stat-num">3+</div><div class="stat-label">Years in Business</div></div></div>
+    <div class="col-6 col-md-3"><div class="stat-box"><div class="stat-num">4.9★</div><div class="stat-label">Average Rating</div></div></div>
+  </div>
+</div> -->
+
+<hr class="my-2">
+
+<!-- CORE VALUES -->
+<div class="container py-5">
+  <div class="text-center mb-5">
+    <p class="section-tag">What Drives Us</p>
+    <h2 class="section-title">Our Core Values</h2>
+  </div>
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="value-card">
+        <span class="value-icon">👟</span>
+        <h4>Premium Quality</h4>
+        <p>We use high-grade materials to ensure long-lasting comfort and durability in every pair.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="value-card">
+        <span class="value-icon">🎨</span>
+        <h4>Modern Design</h4>
+        <p>Stylish trends blended with classic elements to fit every personality and occasion.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="value-card">
+        <span class="value-icon">⚡</span>
+        <h4>Comfort Engineering</h4>
+        <p>Each shoe is engineered to support long walks, intense workouts, and daily life.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="my-2">
+
+<!-- OUR STORY -->
+<div class="container py-5">
+  <div class="row align-items-center g-5">
+    <div class="col-md-6">
+      <p class="section-tag">How It Started</p>
+      <h2 class="section-title" style="font-size:2.4rem;">Our Story</h2>
+      <p class="mt-3" style="font-size:1.05rem; line-height:1.8;">
+        OLLA Shoes started as a small workshop in Lahore and grew into a trusted brand loved by thousands across Pakistan. From streetwear sneakers to athletic performance shoes, our purpose remains the same: create footwear that helps you <strong>move confidently — every single day</strong>.
+      </p>
+      <a href="cont.html" class="btn btn-outline-primary rounded-pill px-4 py-2 mt-2">Get in Touch →</a>
+    </div>
+    <div class="col-md-6">
+      <img loading="lazy" class="about-img" src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000" alt="Our Story">
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="footer-brand">OLLA Shoes</div>
+        <p style="opacity:0.75; font-size:0.9rem; margin-top:0.75rem;">Premium footwear for every occasion. Comfort meets style — every single step.</p>
+      </div>
+      <div class="col-md-2 footer-links">
+        <strong style="font-size:0.85rem; letter-spacing:1px; text-transform:uppercase; opacity:0.6;">Pages</strong>
+        <div style="margin-top:0.75rem;">
+          <a href="index.html">Home</a>
+          <a href="prod.html">Products</a>
+          <a href="about.html">About</a>
+          <a href="cont.html">Contact</a>
+        </div>
+      </div>
+      <div class="col-md-3 footer-links">
+        <strong style="font-size:0.85rem; letter-spacing:1px; text-transform:uppercase; opacity:0.6;">Follow Us</strong>
+        <div style="margin-top:0.75rem;">
+          <a href="#">Instagram</a>
+          <a href="#">Facebook</a>
+          <a href="#">Twitter / X</a>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <strong style="font-size:0.85rem; letter-spacing:1px; text-transform:uppercase; opacity:0.6;">Contact</strong>
+        <p style="opacity:0.75; font-size:0.9rem; margin-top:0.75rem; margin-bottom:0.3rem;">📍 Lahore, Punjab, Pakistan</p>
+        <p style="opacity:0.75; font-size:0.9rem; margin-bottom:0.3rem;">📞 +92 300 *******</p>
+        <p style="opacity:0.75; font-size:0.9rem;">📧 support@ollashoes.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2025 OLLA Shoes — All Rights Reserved</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
