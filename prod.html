@@ -76,6 +76,7 @@
         <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
         <li class="nav-item"><a class="nav-link" href="cont.html">Contact</a></li>
       </ul>
+      <div class="ms-3 text-white fw-bold">🛒 Cart <span id="cartCount" class="badge bg-light text-dark">0</span></div>
       <div class="ms-3"><a href="prof.html" class="btn-nav-profile">Profile</a></div>
     </div>
   </div>
@@ -222,5 +223,23 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Simple cart counter: "Buy Now" adds the item, count persists in localStorage.
+  const CART_KEY = 'olla_cart_count';
+  let cartCount = Number(localStorage.getItem(CART_KEY)) || 0;
+  const badge = document.getElementById('cartCount');
+  function renderCart() { if (badge) badge.textContent = cartCount; }
+  document.querySelectorAll('.btn-buy').forEach(btn => {
+    btn.addEventListener('click', () => {
+      cartCount++;
+      localStorage.setItem(CART_KEY, cartCount);
+      renderCart();
+      const original = btn.textContent;
+      btn.textContent = 'Added ✓';
+      setTimeout(() => { btn.textContent = original; }, 1200);
+    });
+  });
+  renderCart();
+</script>
 </body>
 </html>

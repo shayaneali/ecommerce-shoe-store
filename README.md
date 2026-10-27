@@ -17,7 +17,7 @@ https://ollashoe.netlify.app/
 
 ## Pages
 - `index.html` — home / showcase
-- `prod.html` — products
+- `prod.html` — products, with a working cart counter (Buy Now adds items; the count persists in localStorage and shows in the navbar)
 - `prof.html` — profile
 - `about.html` — about
 - `cont.html` — contact
