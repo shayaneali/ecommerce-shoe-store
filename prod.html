@@ -50,6 +50,9 @@
     .card-body .price { color: var(--accent); font-weight: 700; font-size: 1rem; margin-bottom: 0.8rem; }
     .btn-buy { border-radius: 50px; font-weight: 600; background: var(--primary); color: white; border: none; padding: 9px 0; width: 100%; transition: 0.2s; cursor: pointer; }
     .btn-buy:hover { background: var(--primary-dark); }
+    .btn-wish { border-radius: 50px; font-weight: 600; background: transparent; color: var(--primary); border: 2px solid var(--primary); padding: 7px 0; width: 100%; transition: 0.2s; cursor: pointer; margin-bottom: 0.6rem; }
+    .btn-wish:hover { background: rgba(13,110,253,0.08); }
+    .btn-wish.active { background: var(--accent); border-color: var(--accent); color: white; }
 
     .search-row { max-width: 420px; margin: 0 auto 2rem; }
     .search-row input { width: 100%; padding: 10px 16px; border-radius: 50px; border: 1px solid #d1d5db; font-size: 0.95rem; outline: none; }
@@ -82,6 +85,7 @@
         <li class="nav-item"><a class="nav-link" href="cont.html">Contact</a></li>
       </ul>
       <div class="ms-3 text-white fw-bold">🛒 Cart <span id="cartCount" class="badge bg-light text-dark">0</span></div>
+      <div class="ms-3 text-white fw-bold">♥ Wishlist <span id="wishlistCount" class="badge bg-light text-dark">0</span></div>
       <div class="ms-3"><a href="prof.html" class="btn-nav-profile">Profile</a></div>
     </div>
   </div>
@@ -113,6 +117,7 @@
           <h5>Urban Sneakers</h5>
           <p class="desc">Perfect for daily streetwear.</p>
           <p class="price">Rs. 4,800</p>
+          <button class="btn-wish" aria-pressed="false">♡ Add to Wishlist</button>
           <button class="btn-buy">Buy Now</button>
         </div>
       </div>
@@ -124,6 +129,7 @@
           <h5>Sport Runner</h5>
           <p class="desc">Ultra-light for fast movement.</p>
           <p class="price">Rs. 5,500</p>
+          <button class="btn-wish" aria-pressed="false">♡ Add to Wishlist</button>
           <button class="btn-buy">Buy Now</button>
         </div>
       </div>
@@ -135,6 +141,7 @@
           <h5>Leather Premium</h5>
           <p class="desc">Timeless design, top-notch material.</p>
           <p class="price">Rs. 7,999</p>
+          <button class="btn-wish" aria-pressed="false">♡ Add to Wishlist</button>
           <button class="btn-buy">Buy Now</button>
         </div>
       </div>
@@ -146,6 +153,7 @@
           <h5>Comfort Foam</h5>
           <p class="desc">100% comfort with memory soles.</p>
           <p class="price">Rs. 4,200</p>
+          <button class="btn-wish" aria-pressed="false">♡ Add to Wishlist</button>
           <button class="btn-buy">Buy Now</button>
         </div>
       </div>
@@ -157,6 +165,7 @@
           <h5>Classic White</h5>
           <p class="desc">Minimalist, clean, always in trend.</p>
           <p class="price">Rs. 6,500</p>
+          <button class="btn-wish" aria-pressed="false">♡ Add to Wishlist</button>
           <button class="btn-buy">Buy Now</button>
         </div>
       </div>
@@ -168,6 +177,7 @@
           <h5>Black Edition</h5>
           <p class="desc">Bold design for bold people.</p>
           <p class="price">Rs. 8,200</p>
+          <button class="btn-wish" aria-pressed="false">♡ Add to Wishlist</button>
           <button class="btn-buy">Buy Now</button>
         </div>
       </div>
@@ -179,6 +189,7 @@
           <h5>Road Runner</h5>
           <p class="desc">Speed engineering with grip.</p>
           <p class="price">Rs. 5,800</p>
+          <button class="btn-wish" aria-pressed="false">♡ Add to Wishlist</button>
           <button class="btn-buy">Buy Now</button>
         </div>
       </div>
@@ -190,6 +201,7 @@
           <h5>Flexi Walkers</h5>
           <p class="desc">Made for all-day walking & comfort.</p>
           <p class="price">Rs. 3,900</p>
+          <button class="btn-wish" aria-pressed="false">♡ Add to Wishlist</button>
           <button class="btn-buy">Buy Now</button>
         </div>
       </div>
@@ -268,6 +280,33 @@
       if (noResults) noResults.style.display = visible === 0 ? 'block' : 'none';
     });
   }
+
+  // Wishlist toggle: heart button on each card, names persist in localStorage,
+  // and the wishlist count shows in the navbar.
+  const WISH_KEY = 'olla_wishlist';
+  let wishlist = [];
+  try { wishlist = JSON.parse(localStorage.getItem(WISH_KEY)) || []; } catch (e) { wishlist = []; }
+  const wishBadge = document.getElementById('wishlistCount');
+  function renderWishlist() {
+    if (wishBadge) wishBadge.textContent = wishlist.length;
+    document.querySelectorAll('.btn-wish').forEach(btn => {
+      const name = btn.closest('.product-card')?.querySelector('h5')?.textContent || '';
+      const active = wishlist.includes(name);
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+      btn.textContent = active ? '♥ In Wishlist' : '♡ Add to Wishlist';
+    });
+  }
+  document.querySelectorAll('.btn-wish').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const name = btn.closest('.product-card')?.querySelector('h5')?.textContent || '';
+      if (!name) return;
+      wishlist = wishlist.includes(name) ? wishlist.filter(x => x !== name) : [...wishlist, name];
+      localStorage.setItem(WISH_KEY, JSON.stringify(wishlist));
+      renderWishlist();
+    });
+  });
+  renderWishlist();
 </script>
 </body>
 </html>
