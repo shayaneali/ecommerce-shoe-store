@@ -131,6 +131,7 @@
         <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
         <li class="nav-item"><a class="nav-link" href="cont.html">Contact</a></li>
       </ul>
+      <div class="ms-3 text-white fw-bold">🛒 Cart <span id="cartCount" class="badge bg-light text-dark">0</span></div>
       <div class="ms-3">
         <a href="prof.html" class="btn-nav-profile">Profile</a>
       </div>
@@ -283,6 +284,18 @@
       input.focus();
     }
   });
+</script>
+<script>
+  // Navbar cart badge: reads the shared cart count (same key as prod.html).
+  (function () {
+    var badge = document.getElementById('cartCount');
+    if (!badge) return;
+    function renderCartCount() {
+      badge.textContent = Number(localStorage.getItem('olla_cart_count')) || 0;
+    }
+    renderCartCount();
+    window.addEventListener('storage', renderCartCount);
+  })();
 </script>
 </body>
 </html>
