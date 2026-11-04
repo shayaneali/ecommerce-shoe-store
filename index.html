@@ -99,6 +99,13 @@
     .footer-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.9rem; display: block; margin-bottom: 0.4rem; transition: color 0.2s; }
     .footer-links a:hover { color: white; }
     .footer-bottom { border-top: 1px solid rgba(255,255,255,0.2); margin-top: 1.5rem; padding-top: 1rem; text-align: center; font-size: 0.85rem; opacity: 0.75; }
+    .newsletter-form { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+    .newsletter-input { flex: 1; border: none; border-radius: 50px; padding: 8px 16px; font-size: 0.9rem; outline: none; min-width: 0; }
+    .newsletter-btn { border: none; border-radius: 50px; padding: 8px 20px; font-size: 0.9rem; font-weight: 700; background: var(--accent); color: white; cursor: pointer; white-space: nowrap; }
+    .newsletter-btn:hover { background: #e85a2a; }
+    .newsletter-msg { font-size: 0.85rem; margin-top: 0.5rem; min-height: 1.2em; }
+    .newsletter-msg.success { color: #c8f542; }
+    .newsletter-msg.error { color: #ffc1b3; }
 
     @media (max-width: 768px) {
       .hero h1 { font-size: 3rem; }
@@ -244,10 +251,38 @@
         <p style="opacity:0.75; font-size:0.9rem;">📧 support@ollashoes.com</p>
       </div>
     </div>
+    <div style="max-width:480px; margin-top:1.5rem;">
+      <strong style="font-size:0.85rem; letter-spacing:1px; text-transform:uppercase; opacity:0.6;">Newsletter</strong>
+      <p style="opacity:0.75; font-size:0.9rem; margin-top:0.75rem; margin-bottom:0;">Get new drops and offers first.</p>
+      <form class="newsletter-form" id="newsletter-form" novalidate>
+        <input class="newsletter-input" id="newsletter-email" type="email" placeholder="Your email address" aria-label="Email address for newsletter" autocomplete="email">
+        <button class="newsletter-btn" type="submit">Subscribe</button>
+      </form>
+      <p class="newsletter-msg" id="newsletter-msg" role="status" aria-live="polite"></p>
+    </div>
     <div class="footer-bottom">© 2025 OLLA Shoes — All Rights Reserved</div>
   </div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Newsletter signup validation (no page reload)
+  document.getElementById('newsletter-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var input = document.getElementById('newsletter-email');
+    var msg = document.getElementById('newsletter-msg');
+    var email = input.value.trim();
+    var valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (valid) {
+      msg.textContent = 'Thanks for subscribing! You\'ll hear from us soon.';
+      msg.className = 'newsletter-msg success';
+      input.value = '';
+    } else {
+      msg.textContent = 'Please enter a valid email address.';
+      msg.className = 'newsletter-msg error';
+      input.focus();
+    }
+  });
+</script>
 </body>
 </html>
