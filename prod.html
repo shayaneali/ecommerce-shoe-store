@@ -59,6 +59,10 @@
     .search-row input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(13,110,253,0.15); }
     .search-row p { text-align: center; color: var(--text-muted); margin-top: 1rem; }
 
+    .sort-row { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-bottom: 1.5rem; font-size: 0.95rem; }
+    .sort-row label { color: var(--text-muted); font-weight: 500; }
+    .sort-row select { padding: 8px 14px; border-radius: 50px; border: 1px solid #d1d5db; font-size: 0.95rem; outline: none; background: white; cursor: pointer; }
+    .sort-row select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(13,110,253,0.15); }
     footer { background: var(--primary); color: white; padding: 2.5rem 0 1.5rem; margin-top: 5rem; }
     .footer-brand { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 3px; }
     .footer-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.9rem; display: block; margin-bottom: 0.4rem; transition: color 0.2s; }
@@ -109,9 +113,18 @@
     <p id="noResults" style="display:none;">No products match your search.</p>
   </div>
 
+  <div class="sort-row">
+    <label for="sortSelect">Sort by:</label>
+    <select id="sortSelect" aria-label="Sort products by price">
+      <option value="featured">Featured</option>
+      <option value="price-asc">Price low-to-high</option>
+      <option value="price-desc">Price high-to-low</option>
+    </select>
+  </div>
+
   <div class="row g-4" id="productGrid">
     <div class="col-md-3 col-sm-6">
-      <div class="card product-card h-100">
+      <div class="card product-card h-100" data-price="4800">
         <img loading="lazy" src="https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=800" class="product-img" alt="Urban Sneakers">
         <div class="card-body">
           <h5>Urban Sneakers</h5>
@@ -123,7 +136,7 @@
       </div>
     </div>
     <div class="col-md-3 col-sm-6">
-      <div class="card product-card h-100">
+      <div class="card product-card h-100" data-price="5500">
         <img loading="lazy" src="https://kxadmin.metroshoes.com/product/25-11011330/550/25-11011330LA14.jpg" class="product-img" alt="Sport Runner">
         <div class="card-body">
           <h5>Sport Runner</h5>
@@ -135,7 +148,7 @@
       </div>
     </div>
     <div class="col-md-3 col-sm-6">
-      <div class="card product-card h-100">
+      <div class="card product-card h-100" data-price="7999">
         <img loading="lazy" src="https://xcdn.next.co.uk/Common/Items/Default/Default/ItemImages/3_4Ratio/SearchINT/Lge/AA9025.jpg?im=Resize,width=450" class="product-img" alt="Leather Premium">
         <div class="card-body">
           <h5>Leather Premium</h5>
@@ -147,7 +160,7 @@
       </div>
     </div>
     <div class="col-md-3 col-sm-6">
-      <div class="card product-card h-100">
+      <div class="card product-card h-100" data-price="4200">
         <img loading="lazy" src="https://en-kw.sssports.com/dw/image/v2/BDVB_PRD/on/demandware.static/-/Sites-akeneo-master-catalog/default/dw2255429f/sss/SSS2/N/B/W/1/0/SSS2_NBW1080K14_B_197966138899_2.jpg?sw=400&sh=400&sm=fit" class="product-img" alt="Comfort Foam">
         <div class="card-body">
           <h5>Comfort Foam</h5>
@@ -159,7 +172,7 @@
       </div>
     </div>
     <div class="col-md-3 col-sm-6">
-      <div class="card product-card h-100">
+      <div class="card product-card h-100" data-price="6500">
         <img loading="lazy" src="https://www.calvinklein.com.hk/dw/image/v2/BGLQ_PRD/on/demandware.static/-/Sites-ck-master-catalog/default/dw90422dff/YM01344/YM01344_01W_main_2325x3100_Hi_Res_JPEG.jpg?sw=548&sh=721&q=90" class="product-img" alt="Classic White">
         <div class="card-body">
           <h5>Classic White</h5>
@@ -171,7 +184,7 @@
       </div>
     </div>
     <div class="col-md-3 col-sm-6">
-      <div class="card product-card h-100">
+      <div class="card product-card h-100" data-price="8200">
         <img loading="lazy" src="https://cdn.media.amplience.net/i/clarks/MDPT_AW25_Festive_Dress_1?fmt=auto&w=650" class="product-img" alt="Black Edition">
         <div class="card-body">
           <h5>Black Edition</h5>
@@ -183,7 +196,7 @@
       </div>
     </div>
     <div class="col-md-3 col-sm-6">
-      <div class="card product-card h-100">
+      <div class="card product-card h-100" data-price="5800">
         <img loading="lazy" src="https://media.hypedc.com/cdn-cgi/image/fit=scale-down,f=auto,w=2400/products/184da268-116c-457d-96c3-e76d642e5f43/ec122f34/l47450600_blk_01.jpg" class="product-img" alt="Road Runner">
         <div class="card-body">
           <h5>Road Runner</h5>
@@ -195,7 +208,7 @@
       </div>
     </div>
     <div class="col-md-3 col-sm-6">
-      <div class="card product-card h-100">
+      <div class="card product-card h-100" data-price="3900">
         <img loading="lazy" src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=800" class="product-img" alt="Flexi Walkers">
         <div class="card-body">
           <h5>Flexi Walkers</h5>
@@ -307,6 +320,24 @@
     });
   });
   renderWishlist();
+
+  // Sort by price: reorders the product cards using their data-price attributes.
+  const sortSelect = document.getElementById('sortSelect');
+  const productGrid = document.getElementById('productGrid');
+  const featuredOrder = productGrid ? Array.from(productGrid.children) : [];
+  function cardPrice(col) {
+    const card = col.querySelector('.product-card');
+    return Number(card ? card.dataset.price : 0) || 0;
+  }
+  if (sortSelect && productGrid) {
+    sortSelect.addEventListener('change', () => {
+      const cols = Array.from(productGrid.children);
+      if (sortSelect.value === 'price-asc') cols.sort((a, b) => cardPrice(a) - cardPrice(b));
+      else if (sortSelect.value === 'price-desc') cols.sort((a, b) => cardPrice(b) - cardPrice(a));
+      else cols.sort((a, b) => featuredOrder.indexOf(a) - featuredOrder.indexOf(b));
+      cols.forEach(col => productGrid.appendChild(col));
+    });
+  }
 </script>
 </body>
 </html>
