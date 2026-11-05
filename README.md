@@ -17,7 +17,7 @@ https://ollashoe.netlify.app/
 
 ## Pages
 - `index.html` — home / showcase, with a navbar cart badge reading the shared localStorage cart count (`olla_cart_count`), with a newsletter signup in the footer that validates the email and shows a success or error message without reloading
-- `prod.html` — products, with a working cart counter (Buy Now adds items; the count persists in localStorage and shows in the navbar), plus a live search that filters product cards by name, plus a wishlist toggle on each product card (heart button; saved in localStorage with a count in the navbar), plus sort by price (Featured / Price low-to-high / Price high-to-low) that reorders the product cards
+- `prod.html` — products, with a working cart counter (Buy Now adds items; the count persists in localStorage and shows in the navbar), plus a running cart total next to the cart badge (item prices persist in localStorage), plus a live search that filters product cards by name, plus a wishlist toggle on each product card (heart button; saved in localStorage with a count in the navbar), plus sort by price (Featured / Price low-to-high / Price high-to-low) that reorders the product cards
 - `prof.html` — profile
 - `about.html` — about
 - `cont.html` — contact

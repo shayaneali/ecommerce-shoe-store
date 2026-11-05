@@ -88,7 +88,7 @@
         <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
         <li class="nav-item"><a class="nav-link" href="cont.html">Contact</a></li>
       </ul>
-      <div class="ms-3 text-white fw-bold">🛒 Cart <span id="cartCount" class="badge bg-light text-dark">0</span></div>
+      <div class="ms-3 text-white fw-bold">🛒 Cart <span id="cartCount" class="badge bg-light text-dark">0</span> <span id="cartTotal" class="badge bg-light text-dark">Rs. 0</span></div>
       <div class="ms-3 text-white fw-bold">♥ Wishlist <span id="wishlistCount" class="badge bg-light text-dark">0</span></div>
       <div class="ms-3"><a href="prof.html" class="btn-nav-profile">Profile</a></div>
     </div>
@@ -260,14 +260,25 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   // Simple cart counter: "Buy Now" adds the item, count persists in localStorage.
+  // Item prices are stored alongside the count, and a running cart total
+  // shows next to the cart badge in the navbar.
   const CART_KEY = 'olla_cart_count';
+  const CART_TOTAL_KEY = 'olla_cart_total';
   let cartCount = Number(localStorage.getItem(CART_KEY)) || 0;
+  let cartTotal = Number(localStorage.getItem(CART_TOTAL_KEY)) || 0;
   const badge = document.getElementById('cartCount');
-  function renderCart() { if (badge) badge.textContent = cartCount; }
+  const totalBadge = document.getElementById('cartTotal');
+  function renderCart() {
+    if (badge) badge.textContent = cartCount;
+    if (totalBadge) totalBadge.textContent = 'Rs. ' + cartTotal.toLocaleString('en-US');
+  }
   document.querySelectorAll('.btn-buy').forEach(btn => {
     btn.addEventListener('click', () => {
+      const price = Number(btn.closest('.product-card')?.dataset.price) || 0;
       cartCount++;
+      cartTotal += price;
       localStorage.setItem(CART_KEY, cartCount);
+      localStorage.setItem(CART_TOTAL_KEY, cartTotal);
       renderCart();
       const original = btn.textContent;
       btn.textContent = 'Added ✓';
