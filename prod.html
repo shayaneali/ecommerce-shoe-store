@@ -63,6 +63,14 @@
     .sort-row label { color: var(--text-muted); font-weight: 500; }
     .sort-row select { padding: 8px 14px; border-radius: 50px; border: 1px solid #d1d5db; font-size: 0.95rem; outline: none; background: white; cursor: pointer; }
     .sort-row select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(13,110,253,0.15); }
+
+    .price-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 1.5rem; font-size: 0.95rem; flex-wrap: wrap; }
+    .price-row label { color: var(--text-muted); font-weight: 500; }
+    .price-row output { color: var(--dark); font-weight: 700; }
+    .price-row input[type="range"] { width: 220px; accent-color: var(--primary); cursor: pointer; }
+    .price-reset { padding: 6px 16px; border-radius: 50px; border: 1px solid #d1d5db; background: white; font-size: 0.9rem; cursor: pointer; }
+    .price-reset:hover { border-color: var(--primary); color: var(--primary); }
+
     footer { background: var(--primary); color: white; padding: 2.5rem 0 1.5rem; margin-top: 5rem; }
     .footer-brand { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 3px; }
     .footer-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.9rem; display: block; margin-bottom: 0.4rem; transition: color 0.2s; }
@@ -110,7 +118,7 @@
 
   <div class="search-row">
     <input type="search" id="productSearch" placeholder="Search products…" aria-label="Search products" autocomplete="off" />
-    <p id="noResults" style="display:none;">No products match your search.</p>
+    <p id="noResults" style="display:none;">No products match your filters.</p>
   </div>
 
   <div class="sort-row">
@@ -120,6 +128,12 @@
       <option value="price-asc">Price low-to-high</option>
       <option value="price-desc">Price high-to-low</option>
     </select>
+  </div>
+
+  <div class="price-row">
+    <label for="maxPrice">Max price: <output id="maxPriceLabel">Rs. 8,200</output></label>
+    <input type="range" id="maxPrice" min="3900" max="8200" step="100" value="8200" aria-label="Maximum price" />
+    <button type="button" id="resetPrice" class="price-reset">Reset</button>
   </div>
 
   <div class="row g-4" id="productGrid">
@@ -287,21 +301,49 @@
   });
   renderCart();
 
-  // Live product search: filters product cards by name as you type.
+  // Max-price filter + live search work together: a product card shows only
+  // when its name matches the search text AND its data-price is at or below
+  // the chosen max price. Sort-by-price only reorders cards, so it composes
+  // with both filters.
   const searchInput = document.getElementById('productSearch');
   const noResults = document.getElementById('noResults');
+  let maxPrice = 8200; // highest listed price, so all products show by default
+  const priceInput = document.getElementById('maxPrice');
+  const priceLabel = document.getElementById('maxPriceLabel');
+  function applyProductFilters() {
+    const q = searchInput ? searchInput.value.trim().toLowerCase() : '';
+    let visible = 0;
+    document.querySelectorAll('.product-card').forEach(card => {
+      const name = (card.querySelector('h5')?.textContent || '').toLowerCase();
+      const price = Number(card.dataset.price) || 0;
+      const match = (!q || name.includes(q)) && price <= maxPrice;
+      const col = card.closest('.col-md-3, .col-sm-6') || card;
+      col.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+    if (noResults) noResults.style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  // Live product search: filters product cards by name as you type.
   if (searchInput) {
-    searchInput.addEventListener('input', () => {
-      const q = searchInput.value.trim().toLowerCase();
-      let visible = 0;
-      document.querySelectorAll('.product-card').forEach(card => {
-        const name = (card.querySelector('h5')?.textContent || '').toLowerCase();
-        const match = !q || name.includes(q);
-        const col = card.closest('.col-md-3, .col-sm-6') || card;
-        col.style.display = match ? '' : 'none';
-        if (match) visible++;
-      });
-      if (noResults) noResults.style.display = visible === 0 ? 'block' : 'none';
+    searchInput.addEventListener('input', applyProductFilters);
+  }
+
+  // Max-price slider: hides product cards above the chosen price.
+  if (priceInput) {
+    priceInput.addEventListener('input', () => {
+      maxPrice = Number(priceInput.value) || 8200;
+      if (priceLabel) priceLabel.textContent = 'Rs. ' + maxPrice.toLocaleString('en-US');
+      applyProductFilters();
+    });
+  }
+  const resetPriceBtn = document.getElementById('resetPrice');
+  if (resetPriceBtn && priceInput) {
+    resetPriceBtn.addEventListener('click', () => {
+      priceInput.value = '8200';
+      maxPrice = 8200;
+      if (priceLabel) priceLabel.textContent = 'Rs. 8,200';
+      applyProductFilters();
     });
   }
 
@@ -352,3 +394,4 @@
 </script>
 </body>
 </html>
+
