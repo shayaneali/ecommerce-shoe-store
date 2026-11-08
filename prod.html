@@ -71,6 +71,11 @@
     .price-reset { padding: 6px 16px; border-radius: 50px; border: 1px solid #d1d5db; background: white; font-size: 0.9rem; cursor: pointer; }
     .price-reset:hover { border-color: var(--primary); color: var(--primary); }
 
+    /* Back-to-top button: fixed bottom-right, hidden until the user scrolls down */
+    .back-to-top { position: fixed; right: 24px; bottom: 24px; width: 48px; height: 48px; border-radius: 50%; border: none; background: var(--primary); color: white; font-size: 1.4rem; line-height: 1; cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.25); opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; z-index: 1000; }
+    .back-to-top.show { opacity: 1; visibility: visible; }
+    .back-to-top:hover { background: var(--primary-dark); }
+
     footer { background: var(--primary); color: white; padding: 2.5rem 0 1.5rem; margin-top: 5rem; }
     .footer-brand { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 3px; }
     .footer-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.9rem; display: block; margin-bottom: 0.4rem; transition: color 0.2s; }
@@ -236,6 +241,8 @@
   </div>
 </div>
 
+<button type="button" id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
+
 <footer>
   <div class="container">
     <div class="row g-4">
@@ -390,6 +397,16 @@
       else cols.sort((a, b) => featuredOrder.indexOf(a) - featuredOrder.indexOf(b));
       cols.forEach(col => productGrid.appendChild(col));
     });
+  }
+
+  // Back-to-top button: appears once the page is scrolled down 300px,
+  // and smooth-scrolls back to the top when clicked.
+  const backToTopBtn = document.getElementById('backToTop');
+  if (backToTopBtn) {
+    window.addEventListener('scroll', () => {
+      backToTopBtn.classList.toggle('show', window.scrollY > 300);
+    }, { passive: true });
+    backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
 </script>
 </body>
