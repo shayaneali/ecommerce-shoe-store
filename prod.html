@@ -128,10 +128,12 @@
 
   <div class="sort-row">
     <label for="sortSelect">Sort by:</label>
-    <select id="sortSelect" aria-label="Sort products by price">
+    <select id="sortSelect" aria-label="Sort products">
       <option value="featured">Featured</option>
       <option value="price-asc">Price low-to-high</option>
       <option value="price-desc">Price high-to-low</option>
+      <option value="name-asc">Name A–Z</option>
+      <option value="name-desc">Name Z–A</option>
     </select>
   </div>
 
@@ -310,7 +312,7 @@
 
   // Max-price filter + live search work together: a product card shows only
   // when its name matches the search text AND its data-price is at or below
-  // the chosen max price. Sort-by-price only reorders cards, so it composes
+  // the chosen max price. Sorting only reorders cards, so it composes
   // with both filters.
   const searchInput = document.getElementById('productSearch');
   const noResults = document.getElementById('noResults');
@@ -381,7 +383,9 @@
   });
   renderWishlist();
 
-  // Sort by price: reorders the product cards using their data-price attributes.
+  // Sort by price or name: reorders the product cards using their
+  // data-price attributes or their displayed names. Sorting only reorders
+  // cards, so it composes with the search and max-price filter.
   const sortSelect = document.getElementById('sortSelect');
   const productGrid = document.getElementById('productGrid');
   const featuredOrder = productGrid ? Array.from(productGrid.children) : [];
@@ -389,11 +393,17 @@
     const card = col.querySelector('.product-card');
     return Number(card ? card.dataset.price : 0) || 0;
   }
+  function cardName(col) {
+    const card = col.querySelector('.product-card');
+    return (card ? card.querySelector('h5')?.textContent : '') || '';
+  }
   if (sortSelect && productGrid) {
     sortSelect.addEventListener('change', () => {
       const cols = Array.from(productGrid.children);
       if (sortSelect.value === 'price-asc') cols.sort((a, b) => cardPrice(a) - cardPrice(b));
       else if (sortSelect.value === 'price-desc') cols.sort((a, b) => cardPrice(b) - cardPrice(a));
+      else if (sortSelect.value === 'name-asc') cols.sort((a, b) => cardName(a).localeCompare(cardName(b)));
+      else if (sortSelect.value === 'name-desc') cols.sort((a, b) => cardName(b).localeCompare(cardName(a)));
       else cols.sort((a, b) => featuredOrder.indexOf(a) - featuredOrder.indexOf(b));
       cols.forEach(col => productGrid.appendChild(col));
     });
