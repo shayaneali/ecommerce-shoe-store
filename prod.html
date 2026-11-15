@@ -96,6 +96,16 @@
     .back-to-top.show { opacity: 1; visibility: visible; }
     .back-to-top:hover { background: var(--primary-dark); }
 
+    /* Recently viewed products: small cards for the last viewed products,
+       stored in localStorage; hidden until at least one product is viewed */
+    .recently-viewed { margin-top: 4rem; }
+    .recent-card { border: none; border-radius: 16px; overflow: hidden; background: var(--card-bg); box-shadow: 0 2px 12px rgba(0,0,0,0.07); cursor: pointer; transition: transform 0.35s ease, box-shadow 0.35s ease; }
+    .recent-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,0.14); }
+    .recent-img { height: 140px; width: 100%; object-fit: cover; display: block; }
+    .recent-card .card-body { padding: 0.9rem 1rem 1.1rem; }
+    .recent-card h5 { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.25rem; }
+    .recent-card .price { color: var(--accent); font-weight: 700; font-size: 0.95rem; margin: 0; }
+
     footer { background: var(--primary); color: white; padding: 2.5rem 0 1.5rem; margin-top: 5rem; }
     .footer-brand { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 3px; }
     .footer-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.9rem; display: block; margin-bottom: 0.4rem; transition: color 0.2s; }
@@ -261,6 +271,13 @@
       </div>
     </div>
   </div>
+
+  <!-- Recently viewed products: filled in from localStorage by the script below -->
+  <section class="recently-viewed" id="recentlyViewed" style="display:none;" aria-label="Recently viewed products">
+    <p class="section-tag text-center">Picked Up Where You Left Off</p>
+    <h3 class="section-title text-center" style="font-size:2rem;">Recently Viewed</h3>
+    <div class="row g-3 mt-3" id="recentGrid"></div>
+  </section>
 </div>
 
 <button type="button" id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
@@ -505,6 +522,51 @@
     }, { passive: true });
     backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
+
+  // Recently viewed products: clicking a product card records it (name,
+  // image and price) in localStorage, most recent first, capped at 4.
+  // The strip below the grid renders those cards; clicking one scrolls
+  // back to that product in the grid. Hidden until a product is viewed.
+  const RECENT_KEY = 'olla_recently_viewed';
+  let recentlyViewed = [];
+  try { recentlyViewed = JSON.parse(localStorage.getItem(RECENT_KEY)) || []; } catch (e) { recentlyViewed = []; }
+  const recentSection = document.getElementById('recentlyViewed');
+  const recentGrid = document.getElementById('recentGrid');
+  function escAttr(s) { return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+  function renderRecent() {
+    if (!recentSection || !recentGrid) return;
+    if (!recentlyViewed.length) { recentSection.style.display = 'none'; recentGrid.innerHTML = ''; return; }
+    recentSection.style.display = '';
+    recentGrid.innerHTML = recentlyViewed.map(p =>
+      '<div class="col-md-3 col-sm-6"><div class="card recent-card h-100" data-name="' + escAttr(p.name) + '">' +
+      '<img loading="lazy" src="' + escAttr(p.img) + '" class="recent-img" alt="' + escAttr(p.name) + '">' +
+      '<div class="card-body"><h5>' + escAttr(p.name) + '</h5>' +
+      '<p class="price">Rs. ' + Number(p.price).toLocaleString('en-US') + '</p></div></div></div>'
+    ).join('');
+  }
+  function recordRecent(card) {
+    if (!card) return;
+    const name = card.querySelector('h5')?.textContent || '';
+    if (!name) return;
+    const img = card.querySelector('.product-img')?.getAttribute('src') || '';
+    const price = Number(card.dataset.price) || 0;
+    recentlyViewed = [{ name, img, price }, ...recentlyViewed.filter(p => p.name !== name)].slice(0, 4);
+    try { localStorage.setItem(RECENT_KEY, JSON.stringify(recentlyViewed)); } catch (e) {}
+    renderRecent();
+  }
+  document.querySelectorAll('.product-card').forEach(card => {
+    card.addEventListener('click', () => recordRecent(card));
+  });
+  if (recentGrid) {
+    recentGrid.addEventListener('click', (e) => {
+      const mini = e.target.closest('.recent-card');
+      if (!mini) return;
+      const target = Array.from(document.querySelectorAll('.product-card')).find(c =>
+        (c.querySelector('h5')?.textContent || '') === mini.dataset.name);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  }
+  renderRecent();
 </script>
 </body>
 </html>
