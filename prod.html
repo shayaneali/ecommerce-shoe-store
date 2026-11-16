@@ -65,6 +65,23 @@
     .sort-row select { padding: 8px 14px; border-radius: 50px; border: 1px solid #d1d5db; font-size: 0.95rem; outline: none; background: white; cursor: pointer; }
     .sort-row select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(13,110,253,0.15); }
 
+    /* Grid/list view toggle: two pill buttons in the sort row */
+    .view-toggle { display: inline-flex; gap: 6px; margin-right: auto; }
+    .view-toggle button { padding: 8px 14px; border-radius: 50px; border: 1px solid #d1d5db; background: white; font-size: 0.9rem; cursor: pointer; }
+    .view-toggle button:hover { border-color: var(--primary); color: var(--primary); }
+    .view-toggle button.active { background: var(--primary); border-color: var(--primary); color: white; }
+
+    /* List view: one product per row, image left, details right */
+    #productGrid.list-view .col-md-3, #productGrid.list-view .col-sm-6 { flex: 0 0 100%; max-width: 100%; }
+    #productGrid.list-view .product-card { display: flex; flex-direction: row; align-items: stretch; }
+    #productGrid.list-view .product-img { width: 200px; height: auto; min-height: 170px; flex-shrink: 0; }
+    #productGrid.list-view .card-body { flex: 1; justify-content: center; }
+    #productGrid.list-view .btn-buy, #productGrid.list-view .btn-wish { max-width: 240px; }
+    @media (max-width: 576px) {
+      #productGrid.list-view .product-card { flex-direction: column; }
+      #productGrid.list-view .product-img { width: 100%; height: 200px; min-height: 0; }
+    }
+
     .price-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 1.5rem; font-size: 0.95rem; flex-wrap: wrap; }
     .price-row label { color: var(--text-muted); font-weight: 500; }
     .price-row output { color: var(--dark); font-weight: 700; }
@@ -157,6 +174,10 @@
   </div>
 
   <div class="sort-row">
+    <div class="view-toggle" role="group" aria-label="Product layout">
+      <button type="button" id="viewGridBtn" class="active" aria-pressed="true">⊞ Grid</button>
+      <button type="button" id="viewListBtn" aria-pressed="false">☰ List</button>
+    </div>
     <label for="sortSelect">Sort by:</label>
     <select id="sortSelect" aria-label="Sort products">
       <option value="featured">Featured</option>
@@ -512,6 +533,25 @@
       cols.forEach(col => productGrid.appendChild(col));
     });
   }
+
+  // Grid/list view toggle: switches the product grid between the 4-column
+  // grid and a one-per-row list layout (image left, details right).
+  // The choice persists in localStorage and is restored on page load.
+  const VIEW_KEY = 'olla_product_view';
+  const gridBtn = document.getElementById('viewGridBtn');
+  const listBtn = document.getElementById('viewListBtn');
+  function setProductView(view) {
+    const list = view === 'list';
+    if (productGrid) productGrid.classList.toggle('list-view', list);
+    if (gridBtn) { gridBtn.classList.toggle('active', !list); gridBtn.setAttribute('aria-pressed', String(!list)); }
+    if (listBtn) { listBtn.classList.toggle('active', list); listBtn.setAttribute('aria-pressed', String(list)); }
+    try { localStorage.setItem(VIEW_KEY, list ? 'list' : 'grid'); } catch (e) {}
+  }
+  if (gridBtn) gridBtn.addEventListener('click', () => setProductView('grid'));
+  if (listBtn) listBtn.addEventListener('click', () => setProductView('list'));
+  let savedView = 'grid';
+  try { savedView = localStorage.getItem(VIEW_KEY) || 'grid'; } catch (e) {}
+  setProductView(savedView === 'list' ? 'list' : 'grid');
 
   // Back-to-top button: appears once the page is scrolled down 300px,
   // and smooth-scrolls back to the top when clicked.
