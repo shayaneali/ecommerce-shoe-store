@@ -170,6 +170,7 @@
 
   <div class="search-row">
     <input type="search" id="productSearch" placeholder="Search products…" aria-label="Search products" autocomplete="off" />
+    <p id="productCount" role="status" aria-live="polite">Showing 8 products</p>
     <p id="noResults" style="display:none;">No products match your filters.</p>
   </div>
 
@@ -441,6 +442,8 @@
   // with both filters.
   const searchInput = document.getElementById('productSearch');
   const noResults = document.getElementById('noResults');
+  const productCount = document.getElementById('productCount');
+  const totalProducts = document.querySelectorAll('.product-card').length;
   let maxPrice = 8200; // highest listed price, so all products show by default
   const priceInput = document.getElementById('maxPrice');
   const priceLabel = document.getElementById('maxPriceLabel');
@@ -456,6 +459,12 @@
       if (match) visible++;
     });
     if (noResults) noResults.style.display = visible === 0 ? 'block' : 'none';
+    // Product count: "Showing X products" (or "X of Y" while filtering),
+    // updated on every search, price or sort change.
+    if (productCount) productCount.textContent =
+      visible === totalProducts
+        ? `Showing ${totalProducts} products`
+        : `Showing ${visible} of ${totalProducts} products`;
   }
 
   // Live product search: filters product cards by name as you type.
@@ -480,6 +489,9 @@
       applyProductFilters();
     });
   }
+
+  // Initial pass so the product count is computed from the live grid on load.
+  applyProductFilters();
 
   // Wishlist toggle: heart button on each card, names persist in localStorage,
   // and the wishlist count shows in the navbar.
