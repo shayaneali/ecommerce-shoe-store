@@ -3,10 +3,10 @@
 A responsive e-commerce showcase interface for a shoe store, with product listings, product detail, about, contact and profile pages, built with modern layout techniques (Flexbox/Grid).
 
 ## Live Demo
-https://ollashoe.netlify.app/
+https://shayaneali.github.io/ecommerce-shoe-store/
 
 ## Screenshot
-![ecommerce-shoe-store screenshot](https://image.thum.io/get/width/1200/https://ollashoe.netlify.app/)
+![ecommerce-shoe-store screenshot](https://image.thum.io/get/width/1200/https://shayaneali.github.io/ecommerce-shoe-store/)
 
 ## Tech Stack
 - HTML5
