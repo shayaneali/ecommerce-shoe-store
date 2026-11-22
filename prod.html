@@ -71,6 +71,11 @@
     .view-toggle button:hover { border-color: var(--primary); color: var(--primary); }
     .view-toggle button.active { background: var(--primary); border-color: var(--primary); color: white; }
 
+    /* Favourites-only filter: pill toggle in the sort row, active state in accent */
+    .fav-toggle { padding: 8px 14px; border-radius: 50px; border: 1px solid #d1d5db; background: white; font-size: 0.9rem; cursor: pointer; }
+    .fav-toggle:hover { border-color: var(--primary); color: var(--primary); }
+    .fav-toggle.active { background: var(--accent); border-color: var(--accent); color: white; }
+
     /* List view: one product per row, image left, details right */
     #productGrid.list-view .col-md-3, #productGrid.list-view .col-sm-6 { flex: 0 0 100%; max-width: 100%; }
     #productGrid.list-view .product-card { display: flex; flex-direction: row; align-items: stretch; }
@@ -179,6 +184,7 @@
       <button type="button" id="viewGridBtn" class="active" aria-pressed="true">⊞ Grid</button>
       <button type="button" id="viewListBtn" aria-pressed="false">☰ List</button>
     </div>
+    <button type="button" id="favOnlyBtn" class="fav-toggle" aria-pressed="false">♥ Favourites only</button>
     <label for="sortSelect">Sort by:</label>
     <select id="sortSelect" aria-label="Sort products">
       <option value="featured">Featured</option>
@@ -445,26 +451,39 @@
   const productCount = document.getElementById('productCount');
   const totalProducts = document.querySelectorAll('.product-card').length;
   let maxPrice = 8200; // highest listed price, so all products show by default
+  let showFavouritesOnly = false; // restored from localStorage after the wishlist code below
   const priceInput = document.getElementById('maxPrice');
   const priceLabel = document.getElementById('maxPriceLabel');
   function applyProductFilters() {
     const q = searchInput ? searchInput.value.trim().toLowerCase() : '';
+    // Favourites-only reads the stored wishlist directly (same 'olla_wishlist'
+    // key the wishlist toggle uses), so it works on the first pass too.
+    let favNames = [];
+    try { favNames = JSON.parse(localStorage.getItem('olla_wishlist')) || []; } catch (e) { favNames = []; }
     let visible = 0;
     document.querySelectorAll('.product-card').forEach(card => {
       const name = (card.querySelector('h5')?.textContent || '').toLowerCase();
       const price = Number(card.dataset.price) || 0;
-      const match = (!q || name.includes(q)) && price <= maxPrice;
+      const match = (!q || name.includes(q)) && price <= maxPrice &&
+        (!showFavouritesOnly || favNames.includes(card.querySelector('h5')?.textContent || ''));
       const col = card.closest('.col-md-3, .col-sm-6') || card;
       col.style.display = match ? '' : 'none';
       if (match) visible++;
     });
-    if (noResults) noResults.style.display = visible === 0 ? 'block' : 'none';
+    if (noResults) {
+      noResults.style.display = visible === 0 ? 'block' : 'none';
+      if (visible === 0) noResults.textContent = showFavouritesOnly
+        ? 'No favourites yet — tap ♡ Add to Wishlist on a product to see it here.'
+        : 'No products match your filters.';
+    }
     // Product count: "Showing X products" (or "X of Y" while filtering),
     // updated on every search, price or sort change.
     if (productCount) productCount.textContent =
-      visible === totalProducts
-        ? `Showing ${totalProducts} products`
-        : `Showing ${visible} of ${totalProducts} products`;
+      showFavouritesOnly
+        ? `Showing ${visible} favourite product${visible === 1 ? '' : 's'}`
+        : visible === totalProducts
+          ? `Showing ${totalProducts} products`
+          : `Showing ${visible} of ${totalProducts} products`;
   }
 
   // Live product search: filters product cards by name as you type.
@@ -508,6 +527,9 @@
       btn.setAttribute('aria-pressed', active ? 'true' : 'false');
       btn.textContent = active ? '♥ In Wishlist' : '♡ Add to Wishlist';
     });
+    // Re-run the filters so un-wishlisting a card hides it at once while
+    // the "Favourites only" view is on.
+    applyProductFilters();
   }
   document.querySelectorAll('.btn-wish').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -519,6 +541,25 @@
     });
   });
   renderWishlist();
+
+  // "Favourites only" filter view: shows just the wishlisted products,
+  // composing with search, max price and sort like the other filters.
+  // The choice persists in localStorage and is restored on page load.
+  const FAV_ONLY_KEY = 'olla_favourites_only';
+  const favOnlyBtn = document.getElementById('favOnlyBtn');
+  function setFavouritesOnly(on) {
+    showFavouritesOnly = on;
+    if (favOnlyBtn) {
+      favOnlyBtn.classList.toggle('active', on);
+      favOnlyBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    }
+    try { localStorage.setItem(FAV_ONLY_KEY, on ? '1' : '0'); } catch (e) {}
+    applyProductFilters();
+  }
+  if (favOnlyBtn) favOnlyBtn.addEventListener('click', () => setFavouritesOnly(!showFavouritesOnly));
+  let savedFavOnly = false;
+  try { savedFavOnly = localStorage.getItem(FAV_ONLY_KEY) === '1'; } catch (e) {}
+  if (savedFavOnly) setFavouritesOnly(true);
 
   // Sort by price or name: reorders the product cards using their
   // data-price attributes or their displayed names. Sorting only reorders
