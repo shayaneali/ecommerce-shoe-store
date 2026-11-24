@@ -110,6 +110,10 @@
     .cart-item-price { color: var(--accent); font-weight: 700; white-space: nowrap; }
     .cart-remove { background: none; border: 1px solid #d1d5db; border-radius: 50px; padding: 4px 12px; font-size: 0.85rem; cursor: pointer; color: var(--text-muted); }
     .cart-remove:hover { border-color: #dc3545; color: #dc3545; }
+    .cart-qty { display: flex; align-items: center; gap: 6px; }
+    .cart-qty-btn { width: 26px; height: 26px; border: 1px solid #d1d5db; border-radius: 50%; background: white; font-size: 1rem; line-height: 1; cursor: pointer; color: var(--text-muted); }
+    .cart-qty-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .cart-qty-num { min-width: 20px; text-align: center; font-weight: 700; }
     .cart-empty { color: var(--text-muted); text-align: center; padding: 2rem 0; }
     .cart-panel-footer { padding: 1rem 1.25rem; border-top: 1px solid #e5e7eb; font-size: 1.05rem; display: flex; justify-content: space-between; }
 
@@ -353,18 +357,24 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  // Cart: "Buy Now" adds the item; the item names and prices are stored in
-  // localStorage alongside the existing count and total, and a cart panel
-  // opened from the navbar cart badge lists them with a remove button each.
+  // Cart: "Buy Now" adds the item; the item names, prices and quantities
+  // are stored in localStorage alongside the existing count and total, and
+  // a cart panel opened from the navbar cart badge lists them with + / −
+  // quantity controls and a remove button each. Totals follow quantities.
   const CART_KEY = 'olla_cart_count';
   const CART_TOTAL_KEY = 'olla_cart_total';
   const CART_ITEMS_KEY = 'olla_cart_items';
   let cartItems = [];
   try { cartItems = JSON.parse(localStorage.getItem(CART_ITEMS_KEY)) || []; } catch (e) { cartItems = []; }
-  // Items added before item storage existed only left a count/total behind,
-  // so keep those as-is; once items are stored, count and total follow them.
-  let cartCount = cartItems.length > 0 ? cartItems.length : (Number(localStorage.getItem(CART_KEY)) || 0);
-  let cartTotal = cartItems.length > 0 ? cartItems.reduce((sum, item) => sum + (Number(item.price) || 0), 0) : (Number(localStorage.getItem(CART_TOTAL_KEY)) || 0);
+  // Items added before quantities existed only left a count/total behind,
+  // so keep those as-is; stored items without a quantity count as 1.
+  cartItems.forEach(item => { if (!item.qty || item.qty < 1) item.qty = 1; });
+  let cartCount = cartItems.length > 0 ? cartItems.reduce((sum, item) => sum + (item.qty || 1), 0) : (Number(localStorage.getItem(CART_KEY)) || 0);
+  let cartTotal = cartItems.length > 0 ? cartItems.reduce((sum, item) => sum + (Number(item.price) || 0) * (item.qty || 1), 0) : (Number(localStorage.getItem(CART_TOTAL_KEY)) || 0);
+  function recalcCart() {
+    cartCount = cartItems.reduce((sum, item) => sum + (item.qty || 1), 0);
+    cartTotal = cartItems.reduce((sum, item) => sum + (Number(item.price) || 0) * (item.qty || 1), 0);
+  }
   const badge = document.getElementById('cartCount');
   const totalBadge = document.getElementById('cartTotal');
   const cartPanel = document.getElementById('cartPanel');
@@ -394,15 +404,33 @@
         const name = document.createElement('span');
         name.className = 'cart-item-name';
         name.textContent = item.name;
+        const qtyWrap = document.createElement('span');
+        qtyWrap.className = 'cart-qty';
+        const minusBtn = document.createElement('button');
+        minusBtn.type = 'button';
+        minusBtn.className = 'cart-qty-btn';
+        minusBtn.textContent = '−';
+        minusBtn.setAttribute('aria-label', 'Decrease quantity');
+        minusBtn.addEventListener('click', () => changeQty(index, -1));
+        const qtyNum = document.createElement('span');
+        qtyNum.className = 'cart-qty-num';
+        qtyNum.textContent = item.qty || 1;
+        const plusBtn = document.createElement('button');
+        plusBtn.type = 'button';
+        plusBtn.className = 'cart-qty-btn';
+        plusBtn.textContent = '+';
+        plusBtn.setAttribute('aria-label', 'Increase quantity');
+        plusBtn.addEventListener('click', () => changeQty(index, 1));
+        qtyWrap.append(minusBtn, qtyNum, plusBtn);
         const price = document.createElement('span');
         price.className = 'cart-item-price';
-        price.textContent = 'Rs. ' + (Number(item.price) || 0).toLocaleString('en-US');
+        price.textContent = 'Rs. ' + ((Number(item.price) || 0) * (item.qty || 1)).toLocaleString('en-US');
         const removeBtn = document.createElement('button');
         removeBtn.type = 'button';
         removeBtn.className = 'cart-remove';
         removeBtn.textContent = 'Remove';
         removeBtn.addEventListener('click', () => removeCartItem(index));
-        row.append(name, price, removeBtn);
+        row.append(name, qtyWrap, price, removeBtn);
         cartItemsEl.appendChild(row);
       });
     }
@@ -411,8 +439,18 @@
     const item = cartItems[index];
     if (!item) return;
     cartItems.splice(index, 1);
-    cartCount = Math.max(0, cartCount - 1);
-    cartTotal = Math.max(0, cartTotal - (Number(item.price) || 0));
+    recalcCart();
+    saveCart();
+    renderCart();
+  }
+  // Quantity + / −: raises or lowers an item's quantity, removing the row
+  // when it reaches 0; count, totals and localStorage update together.
+  function changeQty(index, delta) {
+    const item = cartItems[index];
+    if (!item) return;
+    item.qty = (item.qty || 1) + delta;
+    if (item.qty <= 0) cartItems.splice(index, 1);
+    recalcCart();
     saveCart();
     renderCart();
   }
@@ -430,9 +468,12 @@
       const card = btn.closest('.product-card');
       const name = card?.querySelector('h5')?.textContent || 'Product';
       const price = Number(card?.dataset.price) || 0;
-      cartItems.push({ name, price });
-      cartCount++;
-      cartTotal += price;
+      // Adding a product already in the cart raises its quantity instead
+      // of adding a duplicate row.
+      const existing = cartItems.find(item => item.name === name && Number(item.price) === price);
+      if (existing) existing.qty = (existing.qty || 1) + 1;
+      else cartItems.push({ name, price, qty: 1 });
+      recalcCart();
       saveCart();
       renderCart();
       const original = btn.textContent;
