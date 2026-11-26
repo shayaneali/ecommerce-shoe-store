@@ -43,7 +43,7 @@
 
     .product-card { border: none; border-radius: 16px; overflow: hidden; background: var(--card-bg); transition: transform 0.35s ease, box-shadow 0.35s ease; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
     .product-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.15); z-index: 5; }
-    .product-img { height: 220px; width: 100%; object-fit: cover; display: block; transition: transform 0.35s ease; }
+    .product-img { height: 220px; width: 100%; object-fit: cover; display: block; transition: transform 0.35s ease; cursor: pointer; }
     .product-card:hover .product-img { transform: scale(1.08); }
     .card-body { padding: 1.2rem 1.2rem 1.4rem; display: flex; flex-direction: column; }
     .card-body h5 { font-weight: 700; font-size: 1.05rem; margin-bottom: 0.25rem; }
@@ -54,6 +54,10 @@
     .btn-wish { border-radius: 50px; font-weight: 600; background: transparent; color: var(--primary); border: 2px solid var(--primary); padding: 7px 0; width: 100%; transition: 0.2s; cursor: pointer; margin-bottom: 0.6rem; }
     .btn-wish:hover { background: rgba(13,110,253,0.08); }
     .btn-wish.active { background: var(--accent); border-color: var(--accent); color: white; }
+    .btn-quick { border-radius: 50px; font-weight: 600; background: transparent; color: var(--dark); border: 2px solid #d1d5db; padding: 7px 0; width: 100%; transition: 0.2s; cursor: pointer; margin-bottom: 0.6rem; }
+    .btn-quick:hover { border-color: var(--primary); color: var(--primary); }
+    .btn-quick-add { border-radius: 50px; font-weight: 600; background: var(--primary); color: white; border: none; padding: 9px 0; width: 100%; transition: 0.2s; cursor: pointer; }
+    .btn-quick-add:hover { background: var(--primary-dark); }
 
     .search-row { max-width: 420px; margin: 0 auto 2rem; }
     .search-row input { width: 100%; padding: 10px 16px; border-radius: 50px; border: 1px solid #d1d5db; font-size: 0.95rem; outline: none; }
@@ -121,6 +125,18 @@
     .back-to-top { position: fixed; right: 24px; bottom: 24px; width: 48px; height: 48px; border-radius: 50%; border: none; background: var(--primary); color: white; font-size: 1.4rem; line-height: 1; cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.25); opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; z-index: 1000; }
     .back-to-top.show { opacity: 1; visibility: visible; }
     .back-to-top:hover { background: var(--primary-dark); }
+
+    /* Quick-view modal: overlay + centred card with a larger product image */
+    .quickview-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 1200; opacity: 0; visibility: hidden; transition: opacity 0.25s, visibility 0.25s; }
+    .quickview-overlay.open { opacity: 1; visibility: visible; }
+    .quickview-modal { position: relative; background: white; border-radius: 16px; overflow: hidden; width: min(560px, 100%); max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+    .quickview-img { width: 100%; height: 320px; object-fit: cover; display: block; }
+    .quickview-body { padding: 1.25rem 1.5rem 1.5rem; }
+    .quickview-body h5 { font-weight: 700; font-size: 1.3rem; margin-bottom: 0.25rem; }
+    .quickview-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.6rem; }
+    .quickview-body .price { color: var(--accent); font-weight: 700; font-size: 1.15rem; margin-bottom: 1rem; }
+    .quickview-close { position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; border-radius: 50%; border: none; background: rgba(255,255,255,0.9); font-size: 1rem; cursor: pointer; color: var(--dark); z-index: 1; }
+    .quickview-close:hover { background: white; }
 
     /* Recently viewed products: small cards for the last viewed products,
        stored in localStorage; hidden until at least one product is viewed */
@@ -214,6 +230,7 @@
           <p class="desc">Perfect for daily streetwear.</p>
           <p class="price">Rs. 4,800</p>
           <button class="btn-wish" aria-pressed="false">♡ Add to Wishlist</button>
+          <button class="btn-quick" type="button">🔍 Quick View</button>
           <button class="btn-buy">Buy Now</button>
         </div>
       </div>
@@ -226,6 +243,7 @@
           <p class="desc">Ultra-light for fast movement.</p>
           <p class="price">Rs. 5,500</p>
           <button class="btn-wish" aria-pressed="false">♡ Add to Wishlist</button>
+          <button class="btn-quick" type="button">🔍 Quick View</button>
           <button class="btn-buy">Buy Now</button>
         </div>
       </div>
@@ -238,6 +256,7 @@
           <p class="desc">Timeless design, top-notch material.</p>
           <p class="price">Rs. 7,999</p>
           <button class="btn-wish" aria-pressed="false">♡ Add to Wishlist</button>
+          <button class="btn-quick" type="button">🔍 Quick View</button>
           <button class="btn-buy">Buy Now</button>
         </div>
       </div>
@@ -250,6 +269,7 @@
           <p class="desc">100% comfort with memory soles.</p>
           <p class="price">Rs. 4,200</p>
           <button class="btn-wish" aria-pressed="false">♡ Add to Wishlist</button>
+          <button class="btn-quick" type="button">🔍 Quick View</button>
           <button class="btn-buy">Buy Now</button>
         </div>
       </div>
@@ -262,6 +282,7 @@
           <p class="desc">Minimalist, clean, always in trend.</p>
           <p class="price">Rs. 6,500</p>
           <button class="btn-wish" aria-pressed="false">♡ Add to Wishlist</button>
+          <button class="btn-quick" type="button">🔍 Quick View</button>
           <button class="btn-buy">Buy Now</button>
         </div>
       </div>
@@ -274,6 +295,7 @@
           <p class="desc">Bold design for bold people.</p>
           <p class="price">Rs. 8,200</p>
           <button class="btn-wish" aria-pressed="false">♡ Add to Wishlist</button>
+          <button class="btn-quick" type="button">🔍 Quick View</button>
           <button class="btn-buy">Buy Now</button>
         </div>
       </div>
@@ -286,6 +308,7 @@
           <p class="desc">Speed engineering with grip.</p>
           <p class="price">Rs. 5,800</p>
           <button class="btn-wish" aria-pressed="false">♡ Add to Wishlist</button>
+          <button class="btn-quick" type="button">🔍 Quick View</button>
           <button class="btn-buy">Buy Now</button>
         </div>
       </div>
@@ -298,6 +321,7 @@
           <p class="desc">Made for all-day walking & comfort.</p>
           <p class="price">Rs. 3,900</p>
           <button class="btn-wish" aria-pressed="false">♡ Add to Wishlist</button>
+          <button class="btn-quick" type="button">🔍 Quick View</button>
           <button class="btn-buy">Buy Now</button>
         </div>
       </div>
@@ -319,6 +343,20 @@
   <div id="cartItems" class="cart-items"></div>
   <div class="cart-panel-footer"><span>Total</span><strong id="cartPanelTotal">Rs. 0</strong></div>
 </aside>
+
+<!-- Quick-view modal: opened from a product image or its Quick View button -->
+<div id="quickViewOverlay" class="quickview-overlay" aria-hidden="true">
+  <div class="quickview-modal" role="dialog" aria-modal="true" aria-labelledby="quickViewName">
+    <button type="button" id="quickViewClose" class="quickview-close" aria-label="Close quick view">✕</button>
+    <img id="quickViewImg" class="quickview-img" src="" alt="">
+    <div class="quickview-body">
+      <h5 id="quickViewName"></h5>
+      <p id="quickViewDesc" class="quickview-desc"></p>
+      <p id="quickViewPrice" class="price"></p>
+      <button type="button" id="quickViewAdd" class="btn-quick-add">Add to Cart</button>
+    </div>
+  </div>
+</div>
 
 <footer>
   <div class="container">
@@ -463,19 +501,23 @@
   if (cartToggle) cartToggle.addEventListener('click', () => setCartPanel(!cartPanel.classList.contains('open')));
   const cartCloseBtn = document.getElementById('cartClose');
   if (cartCloseBtn) cartCloseBtn.addEventListener('click', () => setCartPanel(false));
+  // Shared add-to-cart step used by both Buy Now and the quick-view modal:
+  // adding a product already in the cart raises its quantity instead of
+  // adding a duplicate row.
+  function addToCart(name, price) {
+    const existing = cartItems.find(item => item.name === name && Number(item.price) === price);
+    if (existing) existing.qty = (existing.qty || 1) + 1;
+    else cartItems.push({ name, price, qty: 1 });
+    recalcCart();
+    saveCart();
+    renderCart();
+  }
   document.querySelectorAll('.btn-buy').forEach(btn => {
     btn.addEventListener('click', () => {
       const card = btn.closest('.product-card');
       const name = card?.querySelector('h5')?.textContent || 'Product';
       const price = Number(card?.dataset.price) || 0;
-      // Adding a product already in the cart raises its quantity instead
-      // of adding a duplicate row.
-      const existing = cartItems.find(item => item.name === name && Number(item.price) === price);
-      if (existing) existing.qty = (existing.qty || 1) + 1;
-      else cartItems.push({ name, price, qty: 1 });
-      recalcCart();
-      saveCart();
-      renderCart();
+      addToCart(name, price);
       const original = btn.textContent;
       btn.textContent = 'Added ✓';
       setTimeout(() => { btn.textContent = original; }, 1200);
@@ -701,6 +743,56 @@
     });
   }
   renderRecent();
+
+  // Quick-view modal: clicking a product image (or its Quick View button)
+  // opens a modal with a larger image, name, description, price and an
+  // Add to Cart button that reuses the same cart logic as Buy Now.
+  // Closes on the X button, a click on the backdrop, or the Escape key.
+  const quickViewOverlay = document.getElementById('quickViewOverlay');
+  const quickViewImg = document.getElementById('quickViewImg');
+  const quickViewName = document.getElementById('quickViewName');
+  const quickViewDesc = document.getElementById('quickViewDesc');
+  const quickViewPrice = document.getElementById('quickViewPrice');
+  const quickViewAdd = document.getElementById('quickViewAdd');
+  const quickViewClose = document.getElementById('quickViewClose');
+  let quickViewProduct = null;
+  function openQuickView(card) {
+    if (!card || !quickViewOverlay) return;
+    const name = card.querySelector('h5')?.textContent || 'Product';
+    const img = card.querySelector('.product-img');
+    quickViewProduct = { name, price: Number(card.dataset.price) || 0 };
+    if (quickViewImg) { quickViewImg.src = img?.getAttribute('src') || ''; quickViewImg.alt = name; }
+    if (quickViewName) quickViewName.textContent = name;
+    if (quickViewDesc) quickViewDesc.textContent = card.querySelector('.desc')?.textContent || '';
+    if (quickViewPrice) quickViewPrice.textContent = 'Rs. ' + quickViewProduct.price.toLocaleString('en-US');
+    if (quickViewAdd) quickViewAdd.textContent = 'Add to Cart';
+    quickViewOverlay.classList.add('open');
+    quickViewOverlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    if (quickViewClose) quickViewClose.focus();
+  }
+  function closeQuickView() {
+    if (!quickViewOverlay) return;
+    quickViewOverlay.classList.remove('open');
+    quickViewOverlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+  document.querySelectorAll('.product-card').forEach(card => {
+    const img = card.querySelector('.product-img');
+    if (img) img.addEventListener('click', () => openQuickView(card));
+  });
+  document.querySelectorAll('.btn-quick').forEach(btn => {
+    btn.addEventListener('click', () => openQuickView(btn.closest('.product-card')));
+  });
+  if (quickViewClose) quickViewClose.addEventListener('click', closeQuickView);
+  if (quickViewOverlay) quickViewOverlay.addEventListener('click', (e) => { if (e.target === quickViewOverlay) closeQuickView(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && quickViewOverlay?.classList.contains('open')) closeQuickView(); });
+  if (quickViewAdd) quickViewAdd.addEventListener('click', () => {
+    if (!quickViewProduct) return;
+    addToCart(quickViewProduct.name, quickViewProduct.price);
+    quickViewAdd.textContent = 'Added ✓';
+    setTimeout(() => { quickViewAdd.textContent = 'Add to Cart'; }, 1200);
+  });
 </script>
 </body>
 </html>
