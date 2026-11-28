@@ -49,6 +49,15 @@
     .btn-send { background: var(--primary); color: white; border: none; border-radius: 50px; padding: 12px 0; width: 100%; font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
     .btn-send:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(13,110,253,0.3); }
 
+    /* Inline validation messages under each field */
+    .field-error { display: none; color: #dc3545; font-size: 0.85rem; margin-top: 0.35rem; }
+    .field-error.show { display: block; }
+    .form-control.is-invalid { border-color: #dc3545; }
+    .form-control.is-invalid:focus { border-color: #dc3545; box-shadow: 0 0 0 3px rgba(220,53,69,0.12); }
+    .contact-msg { font-size: 0.95rem; margin-top: 0.75rem; min-height: 1.4em; }
+    .contact-msg.success { color: #198754; }
+    .contact-msg.error { color: #dc3545; }
+
     .info-item { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem; }
     .info-icon { font-size: 1.6rem; flex-shrink: 0; width: 44px; height: 44px; background: rgba(13,110,253,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
     .info-label { font-weight: 700; font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.2rem; }
@@ -106,27 +115,33 @@
     <div class="col-lg-7">
       <div class="contact-card">
         <h3 class="fw-bold mb-4" style="font-size:1.4rem;">Send Us a Message</h3>
+        <form id="contact-form" novalidate>
         <div class="row g-3">
           <div class="col-md-6">
-            <label class="form-label">Your Name</label>
-            <input type="text" class="form-control" placeholder="e.g. Full Name">
+            <label class="form-label" for="contact-name">Your Name</label>
+            <input type="text" class="form-control" id="contact-name" placeholder="e.g. Full Name" autocomplete="name">
+            <div class="field-error" id="contact-name-error">Please enter your name.</div>
           </div>
           <div class="col-md-6">
-            <label class="form-label">Your Email</label>
-            <input type="email" class="form-control" placeholder="e.g. abcd@email.com">
+            <label class="form-label" for="contact-email">Your Email</label>
+            <input type="email" class="form-control" id="contact-email" placeholder="e.g. abcd@email.com" autocomplete="email">
+            <div class="field-error" id="contact-email-error">Please enter a valid email address.</div>
           </div>
           <div class="col-12">
-            <label class="form-label">Subject</label>
-            <input type="text" class="form-control" placeholder="e.g. Order Inquiry">
+            <label class="form-label" for="contact-subject">Subject</label>
+            <input type="text" class="form-control" id="contact-subject" placeholder="e.g. Order Inquiry">
           </div>
           <div class="col-12">
-            <label class="form-label">Message</label>
-            <textarea rows="5" class="form-control" placeholder="Write your message here..."></textarea>
+            <label class="form-label" for="contact-message">Message</label>
+            <textarea rows="5" class="form-control" id="contact-message" placeholder="Write your message here..."></textarea>
+            <div class="field-error" id="contact-message-error">Please write your message.</div>
           </div>
           <div class="col-12 mt-2">
-            <button class="btn-send">Send Message →</button>
+            <button class="btn-send" type="submit">Send Message →</button>
+            <p class="contact-msg" id="contact-msg" role="status" aria-live="polite"></p>
           </div>
         </div>
+        </form>
       </div>
     </div>
 
@@ -228,6 +243,57 @@
     }
     renderCartCount();
     window.addEventListener('storage', renderCartCount);
+  })();
+
+  // Contact form validation: name and message are required, email must be valid.
+  // Errors show inline under each field; nothing is sent until the form is valid.
+  (function () {
+    var form = document.getElementById('contact-form');
+    if (!form) return;
+    var nameInput = document.getElementById('contact-name');
+    var emailInput = document.getElementById('contact-email');
+    var messageInput = document.getElementById('contact-message');
+    var msg = document.getElementById('contact-msg');
+
+    function setError(input, errorEl, show) {
+      input.classList.toggle('is-invalid', show);
+      errorEl.classList.toggle('show', show);
+    }
+    function validateField(input, errorEl, valid) {
+      setError(input, errorEl, !valid);
+      return valid;
+    }
+    function validate() {
+      var nameOk = validateField(nameInput, document.getElementById('contact-name-error'),
+        nameInput.value.trim().length > 0);
+      var emailOk = validateField(emailInput, document.getElementById('contact-email-error'),
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim()));
+      var messageOk = validateField(messageInput, document.getElementById('contact-message-error'),
+        messageInput.value.trim().length > 0);
+      return { nameOk: nameOk, emailOk: emailOk, messageOk: messageOk };
+    }
+    // Clear a field's error as soon as the user fixes it.
+    [nameInput, emailInput, messageInput].forEach(function (input) {
+      input.addEventListener('input', function () {
+        var errorEl = document.getElementById(input.id + '-error');
+        if (errorEl) setError(input, errorEl, false);
+        msg.textContent = '';
+        msg.className = 'contact-msg';
+      });
+    });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var result = validate();
+      if (!result.nameOk || !result.emailOk || !result.messageOk) {
+        msg.textContent = 'Please fix the highlighted fields above.';
+        msg.className = 'contact-msg error';
+        (!result.nameOk ? nameInput : !result.emailOk ? emailInput : messageInput).focus();
+        return;
+      }
+      msg.textContent = 'Thanks! Your message has been sent. We will get back to you soon.';
+      msg.className = 'contact-msg success';
+      form.reset();
+    });
   })();
 </script>
 </body>
